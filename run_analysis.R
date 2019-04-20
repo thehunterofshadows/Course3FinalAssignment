@@ -1,8 +1,7 @@
-#library(data.table)
-#library(dplyr)
-#library(plyr)
-#library(tidyr)  Should this be removed?
-#library(readr)   SHould this be removed?
+library(data.table)
+library(dplyr)
+library(plyr)
+
 
 readMergeData<-function(){
   #read in all the data sets and combine.
@@ -38,11 +37,13 @@ addDescActivityNames<-function(){
 }
 
 avgActivities<-function(){
+  #create the average of each feature
   dataAvg<<-group_by(meanStd,activityLabel,subjectID) %>%
     summarise_each(list(mean))
 }
 
 returnTidyData<-function(){
+  #funciton to return and output the tidy data set
   write.table(myData, file="tidyData.txt",  row.name=FALSE)
   return(dataAvg)
 }
