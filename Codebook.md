@@ -1,8 +1,3 @@
----
-title: "Codebook"
-author: "Justin"
-output: html_document
----
 # Codebook for Course 3 Assignment - Getting and Cleaning Data
 ##Data Description
 
