@@ -5,8 +5,7 @@
 #library(readr)   SHould this be removed?
 
 readMergeData<-function(){
-  #reads in all the data files into tables
-  #instead of doing this, merge each new fread it should work since it's in order.
+  #read in all the data sets and combine.
   
   #combine all of the test columns
   testData<<-fread("UCI HAR Dataset/test/subject_test.txt",sep= " ", header=FALSE, col.names = "subjectID") %>%
@@ -44,7 +43,7 @@ avgActivities<-function(){
 }
 
 returnTidyData<-function(){
-
+  write.table(myData, file="tidyData.txt",  row.name=FALSE)
   return(dataAvg)
 }
 

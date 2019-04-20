@@ -14,8 +14,10 @@
 4. The README that explains the analysis files is clear and understandable.
 5. The work submitted for this project is the work of the student who submitted it.
 
-## Script Description:
-### readMergeData - This function will pull in the test and train data, and merge the results
+## Script Descriptions:
+
+#### readMergeData - This function will pull in the test and train data, and merge the results
+#### this function will also apply the column names from the features.txt
 
 ```R
   ##Read in the test data, subject, and activitiy ID, then combine
@@ -30,7 +32,7 @@
     rbind(testData)
 ```
 
-### meanStd - remove all columns that aren't mean, standard devation, activityID, or subjectID
+#### meanStd - remove all columns that aren't mean, standard devation, activityID, or subjectID
 ```R
   ## first create a vector with the columns names i need to keep
   myCols<-grep("mean|std",names(fullData),value = TRUE) %>%
@@ -40,4 +42,25 @@
   meanStd<<-fullData[,..myCols]
 ```
 
+#### addDescActivityNames - matches up the activityID to the activity name from activity_labels.txt
+```R
+  myLabels<-fread("UCI HAR Dataset/activity_labels.txt", sep=" ",header=FALSE, col.names=c("activityID","activityLabel"))
+  meanStd<<-merge(myLabels, meanStd, by="activityID", all = TRUE)
+```
 
+#### avgActivities - creates the final tidy WIDE data set by calculating the average 
+#### of all the feature values for each activity and subject
+```R
+  dataAvg<<-group_by(meanStd,activityLabel,subjectID) %>%
+    summarise_each(list(mean))
+```
+
+#### returnTidyData - returns the final tidy data set, as well as writing it to tidyData.txt
+```R
+  write.table(myData, file="tidyData.txt",  row.name=FALSE)
+  return(dataAvg)
+```
+
+
+## Conclusion
+I chose to make my tidy data set wide, with a seperate column for each average value.  Per Hadley Wickham' paper "Tidy Data", tidy data sets can be wide or narrow
